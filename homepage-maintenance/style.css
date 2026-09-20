@@ -1,0 +1,160 @@
+/* ============================================================
+   VIDE BERLIN STUDIO — colors & type (shared brand tokens)
+   Same source as homepage/style.css — see that file for the
+   full rationale. Only the tokens the maintenance page needs.
+   ============================================================ */
+
+:root {
+  --vide-pink:        #FF0A5F;
+  --vide-magenta:     #D9197B;
+  --vide-violet:      #6A1FCC;
+  --vide-blue:        #1226D6;
+  --vide-deep-blue:   #050C7A;
+
+  --paper:            #FFFFFF;
+  --mist:             #F2F2F4;
+  --ink:              #0A0A0B;
+  --ink-true:         #000000;
+
+  --border:           rgba(10, 10, 11, 0.10);
+  --fg-muted:         rgba(10, 10, 11, 0.55);
+  --fg-quiet:         rgba(10, 10, 11, 0.32);
+
+  /* System fonts only — no Google Fonts request, so no visitor IP
+     is sent to a third party just to render text (see chat re. DSGVO). */
+  --font-display: Arial, Helvetica, sans-serif;
+  --font-sans:    Arial, Helvetica, sans-serif;
+  --font-mono:    ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ============================================================
+   Maintenance page
+   ============================================================ */
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--paper); color: var(--ink);
+  height: 100%;
+  overflow: hidden;
+}
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.maint-app {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ===== Signature orb — parked centered, gentle idle drift ===== */
+.orb-stage {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.orb {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50vw;
+  height: 50vw;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 28% 78%, var(--vide-pink)   0%, rgba(255,10,95,0)   55%),
+    radial-gradient(circle at 75% 25%, var(--vide-blue)   0%, rgba(18,38,214,0)   55%),
+    radial-gradient(circle at 50% 50%, var(--vide-violet) 0%, rgba(106,31,204,0)  65%),
+    var(--vide-violet);
+  filter: blur(90px);
+  opacity: 0.95;
+  will-change: transform, filter;
+  transform-origin: center center;
+}
+.orb__inner {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  animation: orb-breathe 14s ease-in-out infinite alternate;
+}
+@keyframes orb-breathe {
+  0%   { transform: rotate(0deg)  scale(1.00); filter: hue-rotate(0deg); }
+  100% { transform: rotate(20deg) scale(1.06); filter: hue-rotate(18deg); }
+}
+
+/* ===== Content ===== */
+.maint {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+}
+.maint__logo {
+  margin: 0 0 clamp(48px, 6vw, 72px);
+  mix-blend-mode: difference;
+}
+.maint__logo img {
+  display: block;
+  /* the wordmark is now the sole focal element (title removed), sized
+     up accordingly and centered by .maint's flex layout */
+  width: clamp(220px, 26vw, 420px);
+  height: auto;
+  margin: 0 auto;
+}
+.maint__lede {
+  font-family: var(--font-display); font-weight: 500;
+  /* scales with viewport width (not a near-fixed clamp floor) so each
+     sentence stays on its own single line at any screen size */
+  font-size: clamp(11px, 3.6vw, 26px);
+  white-space: nowrap;
+  line-height: 1.4; letter-spacing: -0.015em;
+  color: var(--paper);
+  opacity: 0.75;
+  margin: 0 auto 40px;
+  mix-blend-mode: difference;
+}
+.maint__email-wrap { margin: 0; mix-blend-mode: difference; }
+.maint__email {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(11px, 3vw, 24px);
+  white-space: nowrap;
+  letter-spacing: -0.025em; color: var(--paper);
+  display: inline-flex; align-items: center; gap: 10px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--paper);
+  transition: opacity 180ms var(--ease-out-soft);
+  text-decoration: none;
+}
+.maint__email:hover { opacity: 0.6; }
+
+/* Block-editor wrapper resets so centering/spacing matches the source design */
+.maint .wp-block-group, .maint .wp-block-paragraph, .maint .wp-block-heading { margin: 0; }
+
+/* ===== Legal notice (Impressum) — plain running text, like umn.world:
+   no button/pill treatment, just small readable text in the corner. ===== */
+.maint__legal {
+  position: fixed;
+  left: 0; right: 0;
+  bottom: 12px;
+  z-index: 2;
+  margin: 0;
+  padding: 0 20px;
+  text-align: center;
+  font-family: var(--font-sans);
+  /* scales with viewport width so both lines stay single-line and
+     centered at any screen size; sized to the longer of the two lines */
+  font-size: clamp(7px, 2.4vw, 11px);
+  white-space: nowrap;
+  line-height: 1.6;
+  color: rgba(10, 10, 11, 0.10);
+}

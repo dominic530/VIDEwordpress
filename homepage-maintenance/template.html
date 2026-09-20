@@ -1,0 +1,55 @@
+<!-- wp:html -->
+<div class="orb-stage" aria-hidden="true">
+  <div class="orb" id="orb">
+    <div class="orb__inner"></div>
+  </div>
+</div>
+<!-- /wp:html -->
+<!-- wp:group {"className":"maint"} --><main class="wp-block-group maint"><!-- wp:html --><figure class="wp-block-image maint__logo"><img src="https://vide.berlin/wp-content/uploads/2026/07/vide-wordmark-white.png" alt="VIDE Berlin Studio"/></figure><!-- /wp:html --><!-- wp:paragraph {"className":"maint__lede"} --><p class="maint__lede">We're giving the site a little upkeep.<br/>In the meantime, reach us directly.</p><!-- /wp:paragraph --><!-- wp:paragraph {"className":"maint__email-wrap"} --><p class="maint__email-wrap"><a class="maint__email" href="mailto:hello@vide.berlin" target="_blank" rel="noopener noreferrer">hello@vide.berlin <span aria-hidden="true">↗</span></a></p><!-- /wp:paragraph --></main><!-- /wp:group -->
+<!-- wp:paragraph {"className":"maint__legal"} --><p class="maint__legal">VIDE GmbH · Alte Auerbacher Str. 41, 08236 Ellefeld<br/>Geschäftsführer Dominic Tirschmann · Amtsgericht Chemnitz, HRB 37542</p><!-- /wp:paragraph -->
+<!-- wp:html --><script>
+(function () {
+  const orb = document.getElementById('orb');
+  if (!orb) return;
+
+  // Orb is sized in CSS as 50vw (width: 50vw; height: 50vw;) so it scales
+  // with the viewport — read the live size each tick instead of a fixed
+  // constant, and re-read on resize so it stays centered after a resize.
+  let half = orb.offsetWidth / 2;
+  window.addEventListener('resize', () => { half = orb.offsetWidth / 2; });
+
+  function centerPos() {
+    return { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  }
+
+  let pointer = centerPos();
+  let current = centerPos();
+  let active = false;
+
+  window.addEventListener('pointermove', (e) => {
+    pointer.x = e.clientX;
+    pointer.y = e.clientY;
+    active = true;
+  });
+  window.addEventListener('resize', () => {
+    if (!active) { pointer = centerPos(); }
+  });
+
+  function tick(t) {
+    const target = active ? pointer : centerPos();
+    const idleX = active ? 0 : Math.sin(t / 2600) * 60;
+    const idleY = active ? 0 : Math.cos(t / 3100) * 40;
+
+    current.x += (target.x + idleX - current.x) * (active ? 0.06 : 0.03);
+    current.y += (target.y + idleY - current.y) * (active ? 0.06 : 0.03);
+
+    orb.style.transform = `translate3d(${current.x - half}px, ${current.y - half}px, 0)`;
+
+    const hue = Math.sin(t / 4000) * 35;
+    orb.style.filter = `blur(90px) hue-rotate(${hue}deg)`;
+
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script><!-- /wp:html -->
